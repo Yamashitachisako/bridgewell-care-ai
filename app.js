@@ -17,9 +17,22 @@ const STORAGE_KEY = "bridgewell-care-records";
 
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {
-      // PWA registration is optional for the local demo.
+    let refreshing = false;
+
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
     });
+
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then((registration) => {
+        registration.update();
+      })
+      .catch(() => {
+        // PWA registration is optional for the local demo.
+      });
   });
 }
 
