@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#35a9bd">
+    <meta name="description" content="障がい者施設・介護現場向けAI日報フィードバックアプリ">
+    <title>BridgeWellCareAI</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/bridgewell-logo.png">
+    <link rel="apple-touch-icon" href="assets/bridgewell-logo.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="メインナビゲーション">
+        <div class="brand">
+          <img class="brand-guide" src="assets/bridgewell-logo.png" alt="BridgeWellCareAI">
+          <div>
+            <p class="brand-title">BridgeWellCareAI</p>
+            <p class="brand-subtitle">Yoriaが支援記録を案内</p>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="daily" type="button">今日の支援記録</button>
+          <button class="nav-item" data-view="feedback" type="button">AIフィードバック</button>
+          <button class="nav-item" data-view="history" type="button">記録履歴</button>
+          <button class="nav-item" data-view="consult" type="button">気になる変化の相談</button>
+          <button class="nav-item" data-view="support" type="button">AI支援提案エンジン</button>
+          <button class="nav-item" data-view="analysis" type="button">行動・ルーティン分析</button>
+          <button class="nav-item" data-view="profile" type="button">利用者プロフィール</button>
+          <button class="nav-item" data-view="dashboard" type="button">管理者ダッシュボード</button>
+        </nav>
+
+        <div class="side-note">
+          <img src="assets/yoria-guide.png" alt="" aria-hidden="true">
+          <strong>Yoriaガイド</strong>
+          <span>AI出力は診断ではなく、職員の観察・振り返り・相談を支援するための提案です。</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">障がい者施設・介護現場向け</p>
+            <h1>AI日報フィードバック</h1>
+          </div>
+          <div class="guide-bubble">
+            <img src="assets/yoria-guide.png" alt="Yoria">
+            <p><strong>Yoria</strong><span>今日の支援記録から、次の気づきを一緒に整理します。</span></p>
+          </div>
+        </header>
+
+        <section class="view active" id="daily">
+          <div class="section-head">
+            <div>
+              <h2>今日の支援記録</h2>
+              <p>日々の記録を入力すると、AIが振り返り・観察ポイント・次回支援案を生成します。</p>
+            </div>
+            <div class="action-row">
+              <button class="secondary-action" id="saveRecord" type="button">記録を保存</button>
+              <button class="primary-action" id="generateFeedback" type="button">フィードバック生成</button>
+            </div>
+          </div>
+
+          <div class="work-grid">
+            <form class="panel record-form">
+              <label>
+                利用者
+                <input id="clientName" value="田中さん" placeholder="例：田中さん" aria-label="利用者名">
+              </label>
+
+              <label>
+                今日の様子
+                <textarea id="dailyMood" rows="4">午前中は作業への参加が少なく、声かけへの反応も普段よりゆっくりだった。昼食後は少し表情が明るくなり、好きな音楽の話題には反応があった。</textarea>
+              </label>
+
+              <label>
+                支援内容
+                <textarea id="supportAction" rows="4">無理に作業へ誘わず、休憩スペースで落ち着ける時間を作った。午後は短時間の軽作業から声をかけた。</textarea>
+              </label>
+
+              <label>
+                気になる変化・インシデント
+                <textarea id="concernNote" rows="4">ここ数日、午前中の反応が少ない。睡眠や体調面の確認が必要かもしれない。</textarea>
+              </label>
+            </form>
+
+            <div class="panel snapshot">
+              <div class="client-card">
+                <div class="avatar">田</div>
+                <div>
+                  <h3 id="snapshotName">田中さん</h3>
+                  <p>生活介護 / 週5日利用</p>
+                </div>
+              </div>
+              <div class="profile-tags">
+                <span>音楽が好き</span>
+                <span>急な予定変更が苦手</span>
+                <span>午前はゆっくり開始</span>
+              </div>
+              <dl class="mini-stats">
+                <div>
+                  <dt>今週の記録</dt>
+                  <dd>12件</dd>
+                </div>
+                <div>
+                  <dt>活動参加</dt>
+                  <dd>68%</dd>
+                </div>
+                <div>
+                  <dt>注意サイン</dt>
+                  <dd>2件</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="feedback">
+          <div class="section-head">
+            <div>
+              <h2>AIフィードバック</h2>
+              <p>現場の判断を置き換えず、振り返りと次の観察を支援します。</p>
+            </div>
+          </div>
+
+          <div class="feedback-grid" id="feedbackCards">
+            <article class="feedback-card">
+              <img class="card-guide" src="assets/yoria-guide.png" alt="" aria-hidden="true">
+              <span class="card-label">良かった支援</span>
+              <h3>無理に促さず、落ち着ける時間を確保できています</h3>
+              <p>反応が少ない場面で作業参加を急がず、本人のペースを尊重した点は有効です。</p>
+            </article>
+            <article class="feedback-card">
+              <span class="card-label">観察ポイント</span>
+              <h3>午前中の反応低下が続くか確認しましょう</h3>
+              <p>睡眠、服薬、体調、朝の環境変化、来所前の出来事を数日単位で確認すると傾向が見えやすくなります。</p>
+            </article>
+            <article class="feedback-card">
+              <span class="card-label">次回の声かけ</span>
+              <h3>好きな話題から短く始める</h3>
+              <p>「音楽の話を少し聞かせてください」など、本人が反応しやすい入口から関わると参加につながる可能性があります。</p>
+            </article>
+          </div>
+
+          <div class="safety-box">
+            <strong>安全設計</strong>
+            <p>急な意識低下、強い痛み、転倒、食事・水分摂取の著しい低下などがある場合は、施設の手順に沿って管理者・医療職へ相談してください。</p>
+          </div>
+        </section>
+
+        <section class="view" id="history">
+          <div class="section-head">
+            <div>
+              <h2>記録履歴</h2>
+              <p>保存した支援記録を見返し、不要な記録は削除できます。</p>
+            </div>
+            <button class="secondary-action" id="clearHistory" type="button">すべて削除</button>
+          </div>
+
+          <div class="history-list" id="historyList">
+            <div class="empty-state">
+              <img src="assets/yoria-guide.png" alt="" aria-hidden="true">
+              <p>まだ保存された記録はありません。今日の支援記録から保存してください。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="profile">
+          <div class="section-head">
+            <div>
+              <h2>利用者プロフィール</h2>
+              <p>特性、関わり方、最近の変化をチームで共有します。</p>
+            </div>
+          </div>
+
+          <div class="profile-layout">
+            <div class="panel">
+              <h3>基本情報</h3>
+              <dl class="detail-list">
+                <div><dt>利用者</dt><dd>田中さん</dd></div>
+                <div><dt>利用サービス</dt><dd>生活介護</dd></div>
+                <div><dt>得意な活動</dt><dd>音楽鑑賞、軽作業、色分け</dd></div>
+                <div><dt>苦手な場面</dt><dd>大きな音、急な予定変更、長時間の待機</dd></div>
+              </dl>
+            </div>
+            <div class="panel">
+              <h3>関わり方メモ</h3>
+              <ul class="note-list">
+                <li>最初の声かけは短く、選択肢を2つまでにする。</li>
+                <li>作業前に見通しを伝えると落ち着きやすい。</li>
+                <li>午前中は休憩をはさみながら参加を促す。</li>
+              </ul>
+            </div>
+            <div class="panel trend-panel">
+              <h3>最近の傾向</h3>
+              <div class="bars">
+                <div><span style="width: 68%"></span><label>活動参加</label></div>
+                <div><span style="width: 52%"></span><label>午前の反応</label></div>
+                <div><span style="width: 80%"></span><label>午後の安定</label></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="consult">
+          <div class="section-head">
+            <div>
+              <h2>気になる変化の相談</h2>
+              <p>気づきを整理し、観察ポイントと支援案に変換します。</p>
+            </div>
+          </div>
+
+          <div class="chat-panel">
+            <div class="chat-log" id="chatLog">
+              <div class="message ai">
+                <img src="assets/yoria-guide.png" alt="" aria-hidden="true">
+                <strong>Yoria</strong>
+                <p>気になる変化を入力してください。観察ポイント、考えられる背景、支援案に分けて整理します。</p>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input id="consultInput" value="最近、午前中ぼーっとしていて作業参加が減っています" aria-label="相談内容">
+              <button class="primary-action" id="sendConsult" type="button">相談する</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="support">
+          <div class="section-head">
+            <div>
+              <h2>AI支援提案エンジン</h2>
+              <p>日報、特性、ルーティン、最近の変化をもとに、次回の個別支援案を整理します。</p>
+            </div>
+            <button class="primary-action" id="refreshPlan" type="button">提案を更新</button>
+          </div>
+
+          <div class="proposal-layout">
+            <div class="panel">
+              <h3>入力される情報</h3>
+              <div class="source-grid">
+                <div><strong>日報</strong><span>反応、気分、支援内容、インシデント</span></div>
+                <div><strong>利用者特性</strong><span>好きな活動、苦手な環境、声かけのコツ</span></div>
+                <div><strong>ルーティン</strong><span>活動参加、休憩、食事、午前・午後の差</span></div>
+                <div><strong>過去の支援</strong><span>うまくいった対応、避けたい対応</span></div>
+              </div>
+            </div>
+
+            <div class="proposal-stack" id="proposalStack">
+              <article class="proposal-card high">
+                <span>優先</span>
+                <h3>午前は短時間活動から開始する</h3>
+                <p>反応が少ない時間帯は、5分程度の軽作業や本人が選びやすい活動から始めると負担を下げやすくなります。</p>
+              </article>
+              <article class="proposal-card">
+                <span>声かけ</span>
+                <h3>選択肢を2つに絞って提示する</h3>
+                <p>「音楽を聞く」「色分けを少しする」など、選びやすい形にすると意思表示を確認しやすくなります。</p>
+              </article>
+              <article class="proposal-card">
+                <span>環境調整</span>
+                <h3>朝の刺激量を減らし、見通しを先に伝える</h3>
+                <p>大きな音や急な予定変更を避け、今日の流れを短く確認してから活動に入ります。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="analysis">
+          <div class="section-head">
+            <div>
+              <h2>行動・ルーティン分析</h2>
+              <p>日々の記録から、活動参加、気分、孤立傾向、反応変化を見える化します。</p>
+            </div>
+          </div>
+
+          <div class="analysis-grid">
+            <div class="panel analysis-chart">
+              <h3>週間ルーティン</h3>
+              <div class="routine-table" aria-label="週間ルーティン分析">
+                <div class="routine-head">項目</div>
+                <div class="routine-head">月</div>
+                <div class="routine-head">火</div>
+                <div class="routine-head">水</div>
+                <div class="routine-head">木</div>
+                <div class="routine-head">金</div>
+                <div>午前参加</div><span class="level low"></span><span class="level mid"></span><span class="level low"></span><span class="level mid"></span><span class="level mid"></span>
+                <div>午後安定</div><span class="level high"></span><span class="level high"></span><span class="level mid"></span><span class="level high"></span><span class="level high"></span>
+                <div>会話反応</div><span class="level mid"></span><span class="level mid"></span><span class="level low"></span><span class="level mid"></span><span class="level high"></span>
+                <div>休憩利用</div><span class="level high"></span><span class="level mid"></span><span class="level high"></span><span class="level mid"></span><span class="level mid"></span>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>AIが見つけた変化兆候</h3>
+              <ul class="insight-list">
+                <li><strong>午前の反応低下</strong><span>3日連続で「反応がゆっくり」という記録があります。</span></li>
+                <li><strong>午後は安定</strong><span>昼食後は表情や会話反応が戻る傾向があります。</span></li>
+                <li><strong>支援の手がかり</strong><span>音楽の話題、短時間作業、休憩スペースが有効です。</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="dashboard">
+          <div class="section-head">
+            <div>
+              <h2>管理者ダッシュボード</h2>
+              <p>記録を施設改善と職員育成につなげるための見える化です。</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="metric"><span>今週の記録</span><strong>84</strong><small>前週比 +12%</small></div>
+            <div class="metric"><span>AI振り返り</span><strong>31</strong><small>新人職員の利用増</small></div>
+            <div class="metric"><span>注意サイン</span><strong>7</strong><small>継続観察 3件</small></div>
+            <div class="metric"><span>共有メモ</span><strong>18</strong><small>支援方法の更新</small></div>
+          </div>
+
+          <div class="manager-panels">
+            <div class="panel">
+              <h3>今週よく出たテーマ</h3>
+              <ul class="note-list">
+                <li>午前中の活動参加が低い利用者への支援</li>
+                <li>声かけ方法の統一</li>
+                <li>休憩スペースの使い方</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>研修テーマ候補</h3>
+              <ul class="note-list">
+                <li>行動変化の記録方法</li>
+                <li>本人のペースを尊重した活動導入</li>
+                <li>ケース会議での日報活用</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

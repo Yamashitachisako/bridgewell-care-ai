@@ -1,0 +1,19 @@
+{
+  "name": "BridgeWellCareAI",
+  "short_name": "BridgeWell",
+  "description": "障がい者施設・介護現場向けAI日報フィードバックアプリ",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3fbfd",
+  "theme_color": "#35a9bd",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/bridgewell-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
